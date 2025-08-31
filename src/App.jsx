@@ -1,31 +1,36 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Dashboard from "./pages/Dashboard.jsx";
-import Drivers from "./pages/Drivers.jsx";
-import Customers from "./pages/Customers.jsx";
-import Rides from "./pages/Rides.jsx";
-import Wallet from "./pages/Wallet.jsx";
-import Sidebar from "./components/Sidebar.jsx";
-import "./output.css";
+// src/App.jsx
+import { useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Sidebar from "./components/Sidebar";
+import Header from "./components/Header";
+import Dashboard from "./pages/Dashboard";
+import Drivers from "./pages/Drivers";
+import Customers from "./pages/Customers";
+import Rides from "./pages/Rides";
+import Wallet from "./pages/Wallet";
 
+export default function App() {
+  const [open, setOpen] = useState(false);
 
-
-function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <div className="flex">
-        <Sidebar />
-        <div className="flex-1 p-6 bg-gray-100 min-h-screen">
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/drivers" element={<Drivers />} />
-            <Route path="/customers" element={<Customers />} />
-            <Route path="/rides" element={<Rides />} />
-            <Route path="/wallet" element={<Wallet />} />
-          </Routes>
+        <Sidebar open={open} setOpen={setOpen} />
+
+        <div className="flex-1 min-h-screen flex flex-col">
+          <Header setOpen={setOpen} />
+
+          <main className="flex-1 p-4 bg-gray-50">
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/drivers" element={<Drivers />} />
+              <Route path="/customers" element={<Customers />} />
+              <Route path="/rides" element={<Rides />} />
+              <Route path="/wallet" element={<Wallet />} />
+            </Routes>
+          </main>
         </div>
       </div>
-    </Router>
+    </BrowserRouter>
   );
 }
-
-export default App;
