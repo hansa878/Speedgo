@@ -8,6 +8,7 @@ import Drivers from "./pages/Drivers";
 import Customers from "./pages/Customers";
 import Rides from "./pages/Rides";
 import Wallet from "./pages/Wallet";
+import "./output.css";
 
 export default function App() {
   const [open, setOpen] = useState(false);
