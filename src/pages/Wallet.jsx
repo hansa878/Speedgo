@@ -1,5 +1,4 @@
 // src/pages/Wallet.jsx
-import Header from "../components/Header";
 import Card from "../components/Card";
 import { db } from "../firebase";
 import { collection, onSnapshot, query, where } from "firebase/firestore";

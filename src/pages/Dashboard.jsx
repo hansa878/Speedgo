@@ -1,5 +1,4 @@
 // src/pages/Dashboard.jsx
-import Header from "../components/Header";
 import Card from "../components/Card";
 import { db } from "../firebase";
 import { collection, getCountFromServer, query, where } from "firebase/firestore";

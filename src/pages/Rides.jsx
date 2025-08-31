@@ -1,5 +1,4 @@
 // src/pages/Rides.jsx
-import Header from "../components/Header";
 import { db } from "../firebase";
 import {
   collection,
