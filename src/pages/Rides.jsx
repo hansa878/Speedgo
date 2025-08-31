@@ -50,7 +50,6 @@ export default function Rides({ onMenu }) {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header title="Rides" onMenu={onMenu} />
       <div className="p-4">
         <div className="mb-3 flex gap-2">
           <input

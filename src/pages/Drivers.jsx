@@ -1,5 +1,4 @@
 // src/pages/Drivers.jsx
-import Header from "../components/Header";
 import { db } from "../firebase";
 import {
   collection,
@@ -42,7 +41,7 @@ export default function Drivers({ onMenu }) {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header title="Drivers" onMenu={onMenu} />
+      
       <div className="p-4">
         <div className="mb-3 flex gap-2">
           <input

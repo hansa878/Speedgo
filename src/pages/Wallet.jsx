@@ -34,7 +34,7 @@ export default function Wallet({ onMenu }) {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header title="Wallet" onMenu={onMenu} />
+     
       <div className="p-4 grid gap-4 grid-cols-1 sm:grid-cols-3">
         <Card label="Completed Rides" value={completed.length} />
         <Card label="Total Revenue (PKR)" value={total} />

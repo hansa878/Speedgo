@@ -28,7 +28,6 @@ export default function Customers({ onMenu }) {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header title="Customers" onMenu={onMenu} />
       <div className="p-4">
         <div className="mb-3">
           <input
