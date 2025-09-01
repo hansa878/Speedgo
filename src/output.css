@@ -254,8 +254,8 @@
   .h-6 {
     height: calc(var(--spacing) * 6);
   }
-  .h-9 {
-    height: calc(var(--spacing) * 9);
+  .h-10 {
+    height: calc(var(--spacing) * 10);
   }
   .h-16 {
     height: calc(var(--spacing) * 16);
@@ -269,8 +269,8 @@
   .w-6 {
     width: calc(var(--spacing) * 6);
   }
-  .w-9 {
-    width: calc(var(--spacing) * 9);
+  .w-10 {
+    width: calc(var(--spacing) * 10);
   }
   .w-72 {
     width: calc(var(--spacing) * 72);
@@ -394,14 +394,14 @@
   .bg-red-100 {
     background-color: var(--color-red-100);
   }
-  .bg-red-500 {
-    background-color: var(--color-red-500);
-  }
   .bg-white {
     background-color: var(--color-white);
   }
   .bg-yellow-100 {
     background-color: var(--color-yellow-100);
+  }
+  .object-cover {
+    object-fit: cover;
   }
   .p-2 {
     padding: calc(var(--spacing) * 2);
@@ -505,6 +505,11 @@
     --tw-shadow: 0 20px 25px -5px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 8px 10px -6px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
+  .transition-all {
+    transition-property: all;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+    transition-duration: var(--tw-duration, var(--default-transition-duration));
+  }
   .transition-opacity {
     transition-property: opacity;
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
@@ -558,6 +563,11 @@
   .sm\:grid-cols-3 {
     @media (width >= 40rem) {
       grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .lg\:ml-72 {
+    @media (width >= 64rem) {
+      margin-left: calc(var(--spacing) * 72);
     }
   }
   .lg\:hidden {

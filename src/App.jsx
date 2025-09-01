@@ -1,4 +1,3 @@
-// src/App.jsx
 import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
@@ -18,7 +17,8 @@ export default function App() {
       <div className="flex">
         <Sidebar open={open} setOpen={setOpen} />
 
-        <div className="flex-1 min-h-screen flex flex-col">
+        {/* Main content */}
+        <div className="flex-1 min-h-screen flex flex-col transition-all duration-300 lg:ml-72">
           <Header setOpen={setOpen} />
 
           <main className="flex-1 p-4 bg-gray-50">

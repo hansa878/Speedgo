@@ -1,6 +1,6 @@
-// src/components/Sidebar.jsx
 import { NavLink } from "react-router-dom";
 import { useEffect } from "react";
+import logo from "../assets/logo.png"; // your logo path
 
 const navItem = (to, label, icon) => (
   <NavLink
@@ -16,7 +16,6 @@ const navItem = (to, label, icon) => (
 );
 
 export default function Sidebar({ open, setOpen }) {
-  // close sidebar when route changes on mobile
   useEffect(() => {
     const closeOnResize = () => {
       if (window.innerWidth >= 1024 && open) setOpen(false);
@@ -30,18 +29,26 @@ export default function Sidebar({ open, setOpen }) {
       {/* Backdrop for mobile */}
       <div
         onClick={() => setOpen(false)}
-        className={`fixed inset-0 bg-black/40 lg:hidden transition-opacity ${open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
+        className={`fixed inset-0 bg-black/40 lg:hidden transition-opacity ${
+          open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
       />
+
       {/* Sidebar */}
       <aside
         className={`fixed z-50 top-0 left-0 h-full w-72 bg-white shadow-xl border-r
-        transition-transform duration-300 lg:translate-x-0
-        ${open ? "translate-x-0" : "-translate-x-full"}`}
+          transition-transform duration-300
+          ${open ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
       >
+        {/* Header with Logo */}
         <div className="flex items-center justify-between px-4 h-16 border-b">
-          <div className="flex items-center gap-2">
-            <div className="h-9 w-9 rounded-xl bg-red-500" />
-            <div className="font-bold">SpeedGo Admin</div>
+          <div className="flex items-center gap-3">
+            <img 
+              src={logo} 
+              alt="SpeedGo Logo" 
+              className="h-10 w-10 object-cover rounded-xl" 
+            />
+            <span className="font-bold text-gray-700 text-lg">SpeedGo Admin</span>
           </div>
           <button
             onClick={() => setOpen(false)}
@@ -52,6 +59,7 @@ export default function Sidebar({ open, setOpen }) {
           </button>
         </div>
 
+        {/* Navigation */}
         <nav className="p-3 space-y-1">
           {navItem("/", "Dashboard", "📊")}
           {navItem("/drivers", "Drivers", "🚗")}
@@ -60,6 +68,7 @@ export default function Sidebar({ open, setOpen }) {
           {navItem("/wallet", "Wallet", "💳")}
         </nav>
 
+        {/* Footer */}
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t">
           <div className="text-xs text-gray-500">v1.0 • React + Tailwind + Firebase</div>
         </div>
