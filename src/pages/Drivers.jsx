@@ -1,111 +1,125 @@
-// src/pages/Drivers.jsx
+import { useEffect, useState } from "react";
 import { db } from "../firebase";
-import {
-  collection,
-  onSnapshot,
-  doc,
-  updateDoc,
-  query,
-  orderBy,
-} from "firebase/firestore";
-import { useEffect, useMemo, useState } from "react";
+import { collection, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore";
 
-export default function Drivers({ onMenu }) {
-  const [rows, setRows] = useState([]);
-  const [qText, setQText] = useState("");
+export default function Drivers() {
+  const [drivers, setDrivers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [editingDriver, setEditingDriver] = useState(null);
+  const [walletAmount, setWalletAmount] = useState("");
 
   useEffect(() => {
-    const q = query(collection(db, "drivers"), orderBy("name", "asc"));
-    const unsub = onSnapshot(q, (snap) => {
-      setRows(
-        snap.docs.map((d) => ({ id: d.id, ...d.data() }))
-      );
-    });
-    return () => unsub();
+    const fetchDrivers = async () => {
+      const driversCol = collection(db, "drivers");
+      const snapshot = await getDocs(driversCol);
+      setDrivers(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+      setLoading(false);
+    };
+    fetchDrivers();
   }, []);
 
-  const filtered = useMemo(() => {
-    const t = qText.toLowerCase();
-    return rows.filter(
-      (r) =>
-        (r.name || "").toLowerCase().includes(t) ||
-        (r.phone || "").toLowerCase().includes(t) ||
-        (r.email || "").toLowerCase().includes(t) ||
-        (r.vehicleType || "").toLowerCase().includes(t)
-    );
-  }, [rows, qText]);
+  const deleteDriver = async (id) => {
+    if (!confirm("Are you sure you want to delete this driver?")) return;
+    await deleteDoc(doc(db, "drivers", id));
+    setDrivers(drivers.filter(d => d.id !== id));
+  };
 
-  const toggleAvailability = async (id, current) => {
-    await updateDoc(doc(db, "drivers", id), { isAvailable: !current });
+  const startEditWallet = (driver) => {
+    setEditingDriver(driver.id);
+    setWalletAmount(driver.wallet || 0);
+  };
+
+  const saveWallet = async (id) => {
+    if (isNaN(walletAmount)) return alert("Enter valid number");
+    await updateDoc(doc(db, "drivers", id), { wallet: Number(walletAmount) });
+    setDrivers(drivers.map(d => d.id === id ? { ...d, wallet: Number(walletAmount) } : d));
+    setEditingDriver(null);
+    setWalletAmount("");
+  };
+
+  const toggleStatus = async (driver) => {
+    const newStatus = driver.status === "Active" ? "Inactive" : "Active";
+    await updateDoc(doc(db, "drivers", driver.id), { status: newStatus });
+    setDrivers(drivers.map(d => d.id === driver.id ? { ...d, status: newStatus } : d));
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      
-      <div className="p-4">
-        <div className="mb-3 flex gap-2">
-          <input
-            value={qText}
-            onChange={(e) => setQText(e.target.value)}
-            placeholder="Search drivers by name/email/phone/vehicle…"
-            className="w-full rounded-xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-400 bg-white"
-          />
-        </div>
-
-        <div className="overflow-auto rounded-2xl border bg-white">
-          <table className="min-w-[800px] w-full text-sm">
-            <thead className="bg-gray-50">
-              <tr className="text-left">
-                <th className="p-3">Name</th>
-                <th className="p-3">Phone</th>
-                <th className="p-3">Email</th>
-                <th className="p-3">Vehicle</th>
-                <th className="p-3">Reg</th>
-                <th className="p-3">Available</th>
-                <th className="p-3">Action</th>
+    <div className="p-4">
+      <h2 className="text-2xl font-bold mb-4">Drivers Management</h2>
+      {loading ? <p>Loading drivers...</p> : (
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white shadow rounded">
+            <thead className="bg-red-600 text-white">
+              <tr>
+                <th className="py-2 px-4">Name</th>
+                <th className="py-2 px-4">Contact</th>
+                <th className="py-2 px-4">Vehicle</th>
+                <th className="py-2 px-4">Wallet</th>
+                <th className="py-2 px-4">Status</th>
+                <th className="py-2 px-4">Actions</th>
               </tr>
             </thead>
             <tbody>
-              {filtered.map((r) => {
-                const reg = r?.vehicleInfo?.registration || "-";
-                return (
-                  <tr key={r.id} className="border-t">
-                    <td className="p-3">{r.name || "-"}</td>
-                    <td className="p-3">{r.phone || "-"}</td>
-                    <td className="p-3">{r.email || "-"}</td>
-                    <td className="p-3">{r.vehicleType || "-"}</td>
-                    <td className="p-3">{reg}</td>
-                    <td className="p-3">
-                      <span
-                        className={`px-2 py-1 rounded-full text-xs ${
-                          r.isAvailable ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600"
-                        }`}
-                      >
-                        {r.isAvailable ? "Yes" : "No"}
-                      </span>
-                    </td>
-                    <td className="p-3">
-                      <button
-                        onClick={() => toggleAvailability(r.id, r.isAvailable)}
-                        className="rounded-xl border px-3 py-1 hover:bg-gray-50"
-                      >
-                        Toggle
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-              {filtered.length === 0 && (
-                <tr>
-                  <td colSpan={7} className="p-6 text-center text-gray-500">
-                    No drivers found.
+              {drivers.map(driver => (
+                <tr key={driver.id} className="border-b hover:bg-red-50">
+                  <td className="py-2 px-4">{driver.name}</td>
+                  <td className="py-2 px-4">{driver.phone}</td>
+                  <td className="py-2 px-4">{driver.vehicle || "N/A"}</td>
+                  <td className="py-2 px-4">
+                    {editingDriver === driver.id ? (
+                      <input
+                        type="number"
+                        className="border p-1 rounded w-20"
+                        value={walletAmount}
+                        onChange={e => setWalletAmount(e.target.value)}
+                      />
+                    ) : (
+                      `Rs ${driver.wallet || 0}`
+                    )}
+                    {driver.wallet === 0 && <span className="text-red-500 font-bold ml-2">⚠ Zero</span>}
                   </td>
+                  <td className="py-2 px-4">{driver.status || "Pending"}</td>
+                  <td className="py-2 px-4 flex gap-2">
+  {editingDriver === driver.id ? (
+    <button
+      onClick={() => saveWallet(driver.id)}
+      className="w-28 py-2 border rounded text-green-600 font-semibold hover:bg-green-50 text-center"
+    >
+      Save
+    </button>
+  ) : (
+    <button
+      onClick={() => startEditWallet(driver)}
+      className="w-28 py-2 border rounded text-blue-600 font-semibold hover:bg-blue-50 text-center"
+    >
+      Edit Wallet
+    </button>
+  )}
+
+  <button
+    onClick={() => toggleStatus(driver)}
+    className="w-28 py-2 border rounded text-blue-600 font-semibold hover:bg-blue-50 text-center"
+  >
+    {driver.status === "Active" ? "Deactivate" : "Activate"}
+  </button>
+
+  <button
+    onClick={() => deleteDriver(driver.id)}
+    className="w-28 py-2 border rounded text-red-600 font-semibold hover:bg-red-50 text-center"
+  >
+    Delete
+  </button>
+</td>
+
                 </tr>
+              ))}
+              {!loading && drivers.length === 0 && (
+                <tr><td colSpan="6" className="p-4">No drivers found</td></tr>
               )}
             </tbody>
           </table>
         </div>
-      </div>
+      )}
     </div>
   );
 }

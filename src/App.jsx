@@ -1,37 +1,40 @@
-import { useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Sidebar from "./components/Sidebar";
-import Header from "./components/Header";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import Layout from "./components/Layout";
 import Dashboard from "./pages/Dashboard";
+import Users from "./pages/Users";
 import Drivers from "./pages/Drivers";
-import Customers from "./pages/Customers";
 import Rides from "./pages/Rides";
 import Wallet from "./pages/Wallet";
-import "./output.css";
+import Promotions from "./pages/Promotions";
+import Notifications from "./pages/Notifications";
+import Settings from "./pages/Settings";
+import LiveMap from "./pages/LiveMap"; 
+import ErrorBoundary from "./components/ErrorBoundary";
+import './output.css';
 
 export default function App() {
-  const [open, setOpen] = useState(false);
-
   return (
-    <BrowserRouter>
-      <div className="flex">
-        <Sidebar open={open} setOpen={setOpen} />
+    <Router>
+      <ErrorBoundary>
+        <Routes>
+          {/* Main Admin Layout */}
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Navigate to="/dashboard" />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="users" element={<Users />} />
+            <Route path="drivers" element={<Drivers />} />
+            <Route path="rides" element={<Rides />} />
+            <Route path="wallet" element={<Wallet />} />
+            <Route path="promotions" element={<Promotions />} />
+            <Route path="notifications" element={<Notifications />} />
+            <Route path="settings" element={<Settings />} />
+            <Route path="livemap" element={<LiveMap />} />
+          </Route>
 
-        {/* Main content */}
-        <div className="flex-1 min-h-screen flex flex-col transition-all duration-300 lg:ml-72">
-          <Header setOpen={setOpen} />
-
-          <main className="flex-1 p-4 bg-gray-50">
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/drivers" element={<Drivers />} />
-              <Route path="/customers" element={<Customers />} />
-              <Route path="/rides" element={<Rides />} />
-              <Route path="/wallet" element={<Wallet />} />
-            </Routes>
-          </main>
-        </div>
-      </div>
-    </BrowserRouter>
+          {/* Fallback for unknown routes */}
+          <Route path="*" element={<Navigate to="/dashboard" />} />
+        </Routes>
+      </ErrorBoundary>
+    </Router>
   );
 }
