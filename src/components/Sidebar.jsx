@@ -16,7 +16,11 @@ export default function Sidebar() {
   ];
 
   return (
-    <div className={`bg-red-600 text-white h-screen p-4 ${open ? "w-64" : "w-20"} transition-all duration-300`}>
+    <div
+  style={{ backgroundColor: "#ff0101" }}
+  className={`text-white h-screen p-4 ${open ? "w-64" : "w-20"} transition-all duration-300`}
+>
+
       <div className="flex justify-between items-center mb-6">
         {open && <img src={logo} alt="Logo" className="h-10 w-auto" />}
         <button onClick={() => setOpen(!open)} className="text-white text-2xl font-bold">
@@ -38,4 +42,4 @@ export default function Sidebar() {
       </nav>
     </div>
   );
-}
+}  

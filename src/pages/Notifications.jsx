@@ -56,14 +56,17 @@ export default function Notifications() {
           <option value="users">Users Only</option>
           <option value="drivers">Drivers Only</option>
         </select>
-        <button className="bg-red-600 text-black px-4 py-2 rounded md:col-span-3">
+        <button
+          className="text-black px-4 py-2 rounded md:col-span-3"
+          style={{ backgroundColor: "#ff0101" }}
+        >
           Send Notification
         </button>
       </form>
 
       <div className="bg-white shadow rounded overflow-x-auto">
         <table className="min-w-full">
-          <thead className="bg-red-600 text-black">
+          <thead style={{ backgroundColor: "#ff0101", color: "black" }}>
             <tr>
               <th className="p-3 text-left">Title</th>
               <th className="p-3">Message</th>
@@ -77,7 +80,13 @@ export default function Notifications() {
               </tr>
             ) : (
               notifications.map((n) => (
-                <tr key={n.id} className="border-b hover:bg-red-50">
+                <tr
+                  key={n.id}
+                  className="border-b"
+                  style={{ cursor: "pointer" }}
+                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#ffe5e5")}
+                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
+                >
                   <td className="p-3">{n.title}</td>
                   <td className="p-3">{n.message}</td>
                   <td className="p-3">{n.target}</td>

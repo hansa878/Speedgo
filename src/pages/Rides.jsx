@@ -58,7 +58,7 @@ export default function Rides() {
       ) : (
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white shadow rounded">
-            <thead className="bg-red-600 text-white">
+            <thead style={{ backgroundColor: "#ff0101", color: "white" }}>
               <tr>
                 <th className="py-2 px-4">Customer</th>
                 <th className="py-2 px-4">Driver</th>
@@ -72,7 +72,13 @@ export default function Rides() {
             </thead>
             <tbody>
               {rides.map(ride => (
-                <tr key={ride.id} className="border-b hover:bg-red-50">
+                <tr
+                  key={ride.id}
+                  className="border-b"
+                  style={{ cursor: "pointer" }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#ffefef"}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "white"}
+                >
                   <td className="py-2 px-4">{ride.customerName || "N/A"}</td>
                   <td className="py-2 px-4">{ride.driverName || "Not assigned"}</td>
                   <td className="py-2 px-4">{ride.pickup || "N/A"}</td>
@@ -97,14 +103,26 @@ export default function Rides() {
                     {editingRide === ride.id ? (
                       <button
                         onClick={() => saveAdjustedFare(ride)}
-                        className="px-2 py-1 text-sm bg-green-200 text-black font-medium rounded hover:bg-green-300 transition"
+                        style={{
+                          backgroundColor: "#4caf50",
+                          color: "white",
+                          padding: "4px 8px",
+                          borderRadius: "4px",
+                          fontSize: "12px",
+                        }}
                       >
                         Save Fare
                       </button>
                     ) : (
                       <button
                         onClick={() => startAdjustFare(ride)}
-                        className="px-2 py-1 text-sm bg-yellow-200 text-black font-medium rounded hover:bg-yellow-300 transition"
+                        style={{
+                          backgroundColor: "#ccc",
+                          color: "black",
+                          padding: "4px 8px",
+                          borderRadius: "4px",
+                          fontSize: "12px",
+                        }}
                       >
                         Adjust Fare
                       </button>
@@ -113,7 +131,13 @@ export default function Rides() {
                     {ride.status !== "completed" && (
                       <button
                         onClick={() => markComplete(ride)}
-                        className="px-2 py-1 text-sm bg-blue-200 text-black font-medium rounded hover:bg-blue-300 transition"
+                        style={{
+                          backgroundColor: "#2196f3",
+                          color: "white",
+                          padding: "4px 8px",
+                          borderRadius: "4px",
+                          fontSize: "12px",
+                        }}
                       >
                         Complete
                       </button>
@@ -122,13 +146,18 @@ export default function Rides() {
                     {ride.status !== "canceled" && (
                       <button
                         onClick={() => markCanceled(ride)}
-                        className="px-2 py-1 text-sm bg-red-200 text-black font-medium rounded hover:bg-red-300 transition"
+                        style={{
+                          backgroundColor: "#ff0101",
+                          color: "white",
+                          padding: "4px 8px",
+                          borderRadius: "4px",
+                          fontSize: "12px",
+                        }}
                       >
                         Cancel
                       </button>
                     )}
                   </td>
-
                 </tr>
               ))}
               {!loading && rides.length === 0 && (

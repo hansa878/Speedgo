@@ -27,7 +27,7 @@ export default function Users() {
 
   const startEditWallet = (user) => {
     setEditingUser(user.id);
-    setWalletAmount(user.wallet || 0);
+    setWalletAmount(user.wallet ? String(user.wallet) : "0");
   };
 
   const saveWallet = async (id) => {
@@ -39,31 +39,38 @@ export default function Users() {
   };
 
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4">Riders Management</h2>
+    <div style={{ padding: "16px" }}>
+      <h2 style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "16px" }}>
+        Riders Management
+      </h2>
       {loading ? <p>Loading users...</p> : (
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-white shadow rounded">
-            <thead className="bg-red-600 text-white">
+        <div style={{ overflowX: "auto" }}>
+          <table style={{ minWidth: "100%", backgroundColor: "white", boxShadow: "0 2px 6px rgba(0,0,0,0.1)", borderRadius: "8px" }}>
+            <thead style={{ backgroundColor: "#ff0101", color: "white" }}>
               <tr>
-                <th className="py-2 px-4">Name</th>
-                <th className="py-2 px-4">Email</th>
-                <th className="py-2 px-4">Phone</th>
-                <th className="py-2 px-4">Wallet</th>
-                <th className="py-2 px-4">Actions</th>
+                <th style={{ padding: "8px 16px" }}>Name</th>
+                <th style={{ padding: "8px 16px" }}>Email</th>
+                <th style={{ padding: "8px 16px" }}>Phone</th>
+                <th style={{ padding: "8px 16px" }}>Wallet</th>
+                <th style={{ padding: "8px 16px" }}>Actions</th>
               </tr>
             </thead>
             <tbody>
               {users.map(user => (
-                <tr key={user.id} className="border-b hover:bg-red-50">
-                  <td className="py-2 px-4">{user.name}</td>
-                  <td className="py-2 px-4">{user.email}</td>
-                  <td className="py-2 px-4">{user.phone}</td>
-                  <td className="py-2 px-4">
+                <tr
+                  key={user.id}
+                  style={{ borderBottom: "1px solid #ddd", cursor: "pointer" }}
+                  onMouseEnter={e => (e.currentTarget.style.backgroundColor = "#ffe5e5")}
+                  onMouseLeave={e => (e.currentTarget.style.backgroundColor = "white")}
+                >
+                  <td style={{ padding: "8px 16px" }}>{user.name}</td>
+                  <td style={{ padding: "8px 16px" }}>{user.email}</td>
+                  <td style={{ padding: "8px 16px" }}>{user.phone}</td>
+                  <td style={{ padding: "8px 16px" }}>
                     {editingUser === user.id ? (
                       <input
                         type="number"
-                        className="border p-1 rounded w-20"
+                        style={{ border: "1px solid #ccc", padding: "4px", borderRadius: "4px", width: "80px" }}
                         value={walletAmount}
                         onChange={e => setWalletAmount(e.target.value)}
                       />
@@ -71,25 +78,25 @@ export default function Users() {
                       `Rs ${user.wallet || 0}`
                     )}
                   </td>
-                  <td className="py-2 px-4">
+                  <td style={{ padding: "8px 16px" }}>
                     {editingUser === user.id ? (
                       <button
                         onClick={() => saveWallet(user.id)}
-                        className="px-3 py-1 bg-green-500 text-white rounded mr-2"
+                        style={{ padding: "6px 12px", backgroundColor: "green", color: "white", borderRadius: "4px", marginRight: "8px", border: "none" }}
                       >
                         Save
                       </button>
                     ) : (
                       <button
                         onClick={() => startEditWallet(user)}
-                        className="px-3 py-1 bg-yellow-400 rounded mr-2"
+                        style={{ padding: "6px 12px", backgroundColor: "#ccc", borderRadius: "4px", marginRight: "8px", border: "none" }}
                       >
                         Edit Wallet
                       </button>
                     )}
                     <button
                       onClick={() => deleteUser(user.id)}
-                      className="px-3 py-1 bg-gray-300 rounded"
+                      style={{ padding: "6px 12px", backgroundColor: "#ccc", borderRadius: "4px", border: "none" }}
                     >
                       Delete
                     </button>
@@ -97,7 +104,9 @@ export default function Users() {
                 </tr>
               ))}
               {!loading && users.length === 0 && (
-                <tr><td colSpan="5" className="p-4">No users found</td></tr>
+                <tr>
+                  <td colSpan="5" style={{ padding: "16px", textAlign: "center" }}>No users found</td>
+                </tr>
               )}
             </tbody>
           </table>

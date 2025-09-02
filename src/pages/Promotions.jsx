@@ -76,26 +76,30 @@ export default function Promotions() {
         <input type="number" placeholder="Discount" className="border p-2 rounded" value={form.discountValue} onChange={e => setForm({...form, discountValue: e.target.value})} />
         <input type="datetime-local" className="border p-2 rounded" value={form.expiry} onChange={e => setForm({...form, expiry: e.target.value})} />
         <input type="number" placeholder="Usage limit" className="border p-2 rounded md:col-span-2" value={form.usageLimit} onChange={e => setForm({...form, usageLimit: e.target.value})} />
-        <div className="md:col-span-2 flex items-center gap-3">
-          <button className="bg-red-600 text-black px-4 py-2 rounded text-sm">
-            {editing ? "Update Promo" : "Create Promo"}
-          </button>
-          {editing && (
-            <button 
-              type="button" 
-              onClick={() => { resetForm(); setEditing(null); }} 
-              className="px-4 py-2 border rounded text-black text-sm"
-            >
-              Cancel
-            </button>
-          )}
-        </div>
+        <div className="md:col-span-2 flex items-center gap-4"> {/* gap increased from 3 → 4 */}
+  <button
+    className="text-black px-5 py-2 rounded text-sm" // px increased from 4 → 5 for more width
+    style={{ backgroundColor: "#ff0101" }}
+  >
+    {editing ? "Update Promo" : "Create Promo"}
+  </button>
+  {editing && (
+    <button 
+      type="button" 
+      onClick={() => { resetForm(); setEditing(null); }} 
+      className="px-5 py-2 border rounded text-black text-sm" // px increased for consistency
+    >
+      Cancel
+    </button>
+  )}
+</div>
+
       </form>
 
       {/* Table */}
       <div className="bg-white shadow rounded overflow-x-auto">
         <table className="min-w-full border-collapse">
-          <thead className="bg-red-600 text-black">
+          <thead style={{ backgroundColor: "#ff0101", color: "black" }}>
             <tr>
               <th className="p-3 text-left">Code</th>
               <th className="p-3">Type</th>
@@ -110,7 +114,13 @@ export default function Promotions() {
             {loading ? (
               <tr><td className="p-4">Loading...</td></tr>
             ) : promos.map(p => (
-              <tr key={p.id} className="border-b hover:bg-red-50">
+              <tr
+                key={p.id}
+                className="border-b"
+                style={{ cursor: "pointer" }}
+                onMouseEnter={e => e.currentTarget.style.backgroundColor = "#ffe5e5"}
+                onMouseLeave={e => e.currentTarget.style.backgroundColor = "transparent"}
+              >
                 <td className="p-3">{p.code}</td>
                 <td className="p-3">{p.discountType}</td>
                 <td className="p-3">{p.discountValue}</td>
@@ -124,7 +134,7 @@ export default function Promotions() {
               </tr>
             ))}
             {!loading && promos.length === 0 && (
-              <tr><td className="p-4">No promos</td></tr>
+              <tr><td className="p-4" colSpan={7}>No promos</td></tr>
             )}
           </tbody>
         </table>

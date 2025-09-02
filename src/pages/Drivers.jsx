@@ -49,7 +49,7 @@ export default function Drivers() {
       {loading ? <p>Loading drivers...</p> : (
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white shadow rounded">
-            <thead className="bg-red-600 text-white">
+            <thead style={{ backgroundColor: "#ff0101", color: "white" }}>
               <tr>
                 <th className="py-2 px-4">Name</th>
                 <th className="py-2 px-4">Contact</th>
@@ -76,41 +76,44 @@ export default function Drivers() {
                     ) : (
                       `Rs ${driver.wallet || 0}`
                     )}
-                    {driver.wallet === 0 && <span className="text-red-500 font-bold ml-2">⚠ Zero</span>}
+                    {driver.wallet === 0 && <span style={{ color: "#ff0101", fontWeight: "bold", marginLeft: "8px" }}>⚠ Zero</span>}
                   </td>
                   <td className="py-2 px-4">{driver.status || "Pending"}</td>
                   <td className="py-2 px-4 flex gap-2">
-  {editingDriver === driver.id ? (
-    <button
-      onClick={() => saveWallet(driver.id)}
-      className="w-28 py-2 border rounded text-green-600 font-semibold hover:bg-green-50 text-center"
-    >
-      Save
-    </button>
-  ) : (
-    <button
-      onClick={() => startEditWallet(driver)}
-      className="w-28 py-2 border rounded text-blue-600 font-semibold hover:bg-blue-50 text-center"
-    >
-      Edit Wallet
-    </button>
-  )}
+                    {editingDriver === driver.id ? (
+                      <button
+                        onClick={() => saveWallet(driver.id)}
+                        className="w-28 py-2 border rounded font-semibold hover:bg-green-50 text-center"
+                        style={{ color: "green" }}
+                      >
+                        Save
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => startEditWallet(driver)}
+                        className="w-28 py-2 border rounded font-semibold hover:bg-blue-50 text-center"
+                        style={{ color: "blue" }}
+                      >
+                        Edit Wallet
+                      </button>
+                    )}
 
-  <button
-    onClick={() => toggleStatus(driver)}
-    className="w-28 py-2 border rounded text-blue-600 font-semibold hover:bg-blue-50 text-center"
-  >
-    {driver.status === "Active" ? "Deactivate" : "Activate"}
-  </button>
+                    <button
+                      onClick={() => toggleStatus(driver)}
+                      className="w-28 py-2 border rounded font-semibold hover:bg-blue-50 text-center"
+                      style={{ color: "blue" }}
+                    >
+                      {driver.status === "Active" ? "Deactivate" : "Activate"}
+                    </button>
 
-  <button
-    onClick={() => deleteDriver(driver.id)}
-    className="w-28 py-2 border rounded text-red-600 font-semibold hover:bg-red-50 text-center"
-  >
-    Delete
-  </button>
-</td>
-
+                    <button
+                      onClick={() => deleteDriver(driver.id)}
+                      className="w-28 py-2 border rounded font-semibold hover:bg-red-50 text-center"
+                      style={{ color: "#ff0101" }}
+                    >
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               ))}
               {!loading && drivers.length === 0 && (
