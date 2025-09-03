@@ -114,28 +114,30 @@ export default function Wallet() {
             </h3>
             <table className="min-w-full border border-gray-300 text-black">
               <thead className="bg-gray-200">
-                <tr>
-                  <th className="p-2 border border-gray-300 text-center">Driver</th>
-                  <th className="p-2 border border-gray-300 text-center">Type</th>
-                  <th className="p-2 border border-gray-300 text-center">Amount</th>
-                  <th className="p-2 border border-gray-300 text-center">Timestamp</th>
-                </tr>
-              </thead>
-              <tbody>
-                {transactions.map(tx => (
-                  <tr
-                    key={tx.id}
-                    className="border-b hover:bg-gray-100 text-center"
-                  >
-                    <td className="p-2 border border-gray-300">
-                      {drivers.find(d => d.id === tx.driverId)?.name || "Unknown"}
-                    </td>
-                    <td className="p-2 border border-gray-300">{tx.type}</td>
-                    <td className="p-2 border border-gray-300">Rs {tx.amount}</td>
-                    <td className="p-2 border border-gray-300">
-                      {tx.timestamp?.toDate().toLocaleString() || "N/A"}
-                    </td>
-                  </tr>
+  <tr>
+    <th className="p-2 border border-gray-300 text-center">Driver</th>
+    <th className="p-2 border border-gray-300 text-center">Type</th>
+    <th className="p-2 border border-gray-300 text-center">Amount</th>
+    <th className="p-2 border border-gray-300 text-center">Commission</th> {/* NEW */}
+    <th className="p-2 border border-gray-300 text-center">Timestamp</th>
+  </tr>
+</thead>
+<tbody>
+  {transactions.map(tx => (
+    <tr key={tx.id} className="border-b hover:bg-gray-100 text-center">
+      <td className="p-2 border border-gray-300">
+        {drivers.find(d => d.id === tx.driverId)?.name || "Unknown"}
+      </td>
+      <td className="p-2 border border-gray-300">{tx.type}</td>
+      <td className="p-2 border border-gray-300">Rs {tx.amount}</td>
+      {/* <-- Yahan add karna hai */}
+      <td className="p-2 border border-gray-300">
+        {tx.type === "commission" ? `Rs ${tx.amount}` : "-"}
+      </td>
+      <td className="p-2 border border-gray-300">
+        {tx.timestamp?.toDate().toLocaleString() || "N/A"}
+      </td>
+    </tr>
                 ))}
                 {transactions.length === 0 && (
                   <tr>

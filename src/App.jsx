@@ -8,17 +8,34 @@ import Wallet from "./pages/Wallet";
 import Promotions from "./pages/Promotions";
 import Notifications from "./pages/Notifications";
 import Settings from "./pages/Settings";
-import LiveMap from "./pages/LiveMap"; 
+import LiveMap from "./pages/LiveMap";
+import Login from "./pages/Login";
 import ErrorBoundary from "./components/ErrorBoundary";
 import './output.css';
+
+// ProtectedRoute Component
+function ProtectedRoute({ children }) {
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  return isLoggedIn ? children : <Navigate to="/login" />;
+}
 
 export default function App() {
   return (
     <Router>
       <ErrorBoundary>
         <Routes>
-          {/* Main Admin Layout */}
-          <Route path="/" element={<Layout />}>
+          {/* Login Page */}
+          <Route path="/login" element={<Login />} />
+
+          {/* Admin Layout with Protected Routes */}
+          <Route 
+            path="/" 
+            element={
+              <ProtectedRoute>
+                <Layout />
+              </ProtectedRoute>
+            }
+          >
             <Route index element={<Navigate to="/dashboard" />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="users" element={<Users />} />
@@ -31,8 +48,8 @@ export default function App() {
             <Route path="livemap" element={<LiveMap />} />
           </Route>
 
-          {/* Fallback for unknown routes */}
-          <Route path="*" element={<Navigate to="/dashboard" />} />
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </ErrorBoundary>
     </Router>
