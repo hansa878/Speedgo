@@ -1,7 +1,8 @@
 // src/pages/Rides.jsx
 import { useEffect, useState } from "react";
 import { db } from "../firebase";
-import { collection, onSnapshot, doc, updateDoc } from "firebase/firestore";
+import { collection, onSnapshot, doc, updateDoc, deleteDoc } from "firebase/firestore";
+
 
 export default function Rides() {
   const [rides, setRides] = useState([]);
@@ -157,6 +158,31 @@ export default function Rides() {
                         Cancel
                       </button>
                     )}
+                    {/* 🔹 Delete Button */}
+  <button
+  onClick={async () => {
+    if (window.confirm("Are you sure you want to delete this ride?")) {
+      try {
+        await deleteDoc(doc(db, "rides", ride.id));
+        setRides(rides.filter(r => r.id !== ride.id));
+        alert("Ride deleted successfully!");
+      } catch (error) {
+        console.error("Error deleting ride:", error);
+        alert("Failed to delete ride.");
+      }
+    }
+  }}
+  style={{
+    backgroundColor: "#ccc",
+    color: "black",
+    padding: "4px 8px",
+    borderRadius: "4px",
+    fontSize: "12px",
+  }}
+>
+  Delete
+</button>
+
                   </td>
                 </tr>
               ))}
