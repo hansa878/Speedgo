@@ -20,7 +20,11 @@ export default function Notifications() {
     e.preventDefault();
     if (!form.title || !form.message) return alert("Title & message required");
 
-    const payload = { ...form, createdAt: serverTimestamp() };
+    const payload = {
+  ...form,
+  createdAt: serverTimestamp() || new Date(),
+};
+
     await addDoc(collection(db, "notifications"), payload);
     setNotifications([{ id: Date.now(), ...payload }, ...notifications]);
     setForm({ title: "", message: "", target: "all" });
