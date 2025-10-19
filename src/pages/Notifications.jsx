@@ -22,8 +22,10 @@ export default function Notifications() {
 
     const payload = {
   ...form,
-  createdAt: serverTimestamp() || new Date(),
+  createdAt: serverTimestamp(),
+  createdAtBackup: new Date(), // 👈 fallback timestamp
 };
+
 
     await addDoc(collection(db, "notifications"), payload);
     setNotifications([{ id: Date.now(), ...payload }, ...notifications]);
